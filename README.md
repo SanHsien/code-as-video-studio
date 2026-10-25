@@ -14,7 +14,7 @@
 | :--- | :--- |
 | `python tools/beat_grid.py --bpm 120 --fps 60 --seconds 5 [--json]` | 節拍網格：算出每一拍的影格位置，讓動畫與音樂同步 |
 | `python tools/video_asset_capture.py --url https://example.com -o assets/captured [--offline]` | 擷取產品網頁截圖與主色，產生 `seek(t)` 動畫範例；只接受 http(s) 網址 |
-| `python tools/verify_video_storyboard.py --input storyboard.json [--output 報告目錄] [--threshold 8.0] [--json]` | 分鏡驗收閘門：8~12 張關鍵影格逐格打分，有違規或低於門檻就擋下 |
+| `python tools/verify_video_storyboard.py --input templates/storyboard-example.json [--output 報告目錄] [--threshold 8.0] [--json]` | 分鏡驗收閘門：8~12 張關鍵影格逐格打分，有違規或低於門檻就擋下 |
 | `python tools/verify_motion_and_video_specs.py` | 檢查本 repo 的手冊結構沒被改壞 |
 
 `video_asset_capture.py` 有安裝 [Playwright](https://playwright.dev/python/) 時會開真瀏覽器截圖；沒有安裝或離線時，自動改用內建的預設素材。其餘工具只用 Python 標準庫。
@@ -24,6 +24,7 @@
 | 路徑 | 內容 |
 | :--- | :--- |
 | `templates/video-studio-harness.md` | Code-as-Video 工作流規範：`V = f(t)`、反 AI 套路清單、確定性渲染、專案常駐規範範本 |
+| `templates/storyboard-example.json` | 可直接通過分鏡閘門的 8 張關鍵影格範例（格式參考） |
 | `templates/beat-grid-motion-example.ts` | Remotion／GSAP 依節拍網格對齊動畫的範例 |
 | `docs/cinetic-motion-dictionary.md` | Cinetic 動態技法手冊（273 種技法、14 類） |
 | `docs/motion-prompt-cheatsheet.md` | Motion Prompt 動效字典速查（144 款） |

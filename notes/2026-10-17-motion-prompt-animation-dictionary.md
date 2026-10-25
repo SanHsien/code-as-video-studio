@@ -96,7 +96,7 @@ tags:
 
 - **對應現有系統 / 專案**：
   - **與 `cinematic-shot` 協同**：先前收錄了 [`notes/2026-10-17-cinematic-shot-ui-film-director.md`](./2026-10-17-cinematic-shot-ui-film-director.md)（電影級 UI 鏡頭運鏡）。`cinematic-shot` 偏向整體場景調度與運鏡腳本，而 `motion-prompt` 正好補足了微觀動態元件（120 種精準命名與貝茲曲線參數），兩者結合能形成頂級的 UI 動態產品影片生成管線。
-  - **與 `Reelbird` 協同**：搭配 [[`ai-inbox/notes/2026-10-17-reelbird-open-source-screen-recorder.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-reelbird-open-source-screen-recorder.md)](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-reelbird-open-source-screen-recorder.md)，Agent 生成具備 `motion-prompt` 頂級動效的前端頁面後，直接以 Reelbird 錄製成果並生成分享短網址。
+  - **與 `Reelbird` 協同**：搭配 [`ai-inbox/notes/2026-10-17-reelbird-open-source-screen-recorder.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-reelbird-open-source-screen-recorder.md)，Agent 生成具備 `motion-prompt` 頂級動效的前端頁面後，直接以 Reelbird 錄製成果並生成分享短網址。
   - **前端樣式預設偏好**：符合全域規則中的「流暢的過場與 hover 回饋」，徹底解決工程師只會寫 `transition: all 0.3s ease` 的僵硬感。
 - **落差與採納判斷**：
   - **值得採納的部分**：

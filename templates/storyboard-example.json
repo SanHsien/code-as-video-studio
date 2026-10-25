@@ -1,0 +1,101 @@
+{
+  "title": "OpenLibrary 借書流程 12 秒展示（範例）",
+  "keyframes": [
+    {
+      "frame_id": "KF-01",
+      "timestamp": 0.0,
+      "shot_type": "Hero",
+      "description": "產品首頁以 34 度斜角懸浮，焦點落在搜尋框，背景書架柔和虛化",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-02",
+      "timestamp": 1.5,
+      "shot_type": "Close-up",
+      "description": "游標移入搜尋框，輸入「Dune」，只有輸入列保持銳利",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-03",
+      "timestamp": 3.0,
+      "shot_type": "Medium",
+      "description": "搜尋結果卡片依序滑入，鏡頭朝第一張卡片推進",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-04",
+      "timestamp": 4.5,
+      "shot_type": "Close-up",
+      "description": "第一本書的封面與作者資訊特寫，評分星等清楚可讀",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-05",
+      "timestamp": 6.0,
+      "shot_type": "Medium",
+      "description": "點擊「借閱」按鈕，按鈕狀態由藍轉綠，鏡頭微幅後拉",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-06",
+      "timestamp": 7.5,
+      "shot_type": "Wide",
+      "description": "借閱清單頁面完整呈現，新加入的書目位於列表頂端",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-07",
+      "timestamp": 9.0,
+      "shot_type": "Close-up",
+      "description": "到期日欄位特寫，日期與提醒開關並列",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    },
+    {
+      "frame_id": "KF-08",
+      "timestamp": 10.5,
+      "shot_type": "Outro",
+      "description": "畫面回到首頁斜角全景，產品名稱與網址置中淡入",
+      "camera_angle": "oblique",
+      "pitch_deg": 34.0,
+      "focal_plane": "selective",
+      "effects": [],
+      "elements": [],
+      "thumbnail_color": "#1f2937"
+    }
+  ]
+}
