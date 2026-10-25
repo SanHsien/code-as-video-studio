@@ -155,6 +155,15 @@ class TestVerifyVideoStoryboard(unittest.TestCase):
         json_file.write_text(json.dumps([{"frame_id": "A", "description": "x"}]), encoding="utf-8")
         loaded = load_keyframes_from_json(json_file)
         self.assertEqual([k.frame_id for k in loaded], ["A"])
+    def test_contact_sheet_duplicate_frame_ids_use_own_evaluation(self):
+        good = Keyframe(frame_id="KF", timestamp=0.0, shot_type="Hero", description="好",
+                        effects=["stream_reveal"])
+        bad = Keyframe(frame_id="KF", timestamp=1.0, shot_type="Hero", description="壞",
+                       effects=["fade_in_all"])
+        report = evaluate_storyboard([good, bad])
+        html_out = generate_contact_sheet_html([good, bad], report)
+        self.assertEqual(html_out.count('class="badge badge-pass"'), 1)
+        self.assertEqual(html_out.count('class="badge badge-fail"'), 1)
 
 
 if __name__ == "__main__":

@@ -221,11 +221,11 @@ def evaluate_storyboard(keyframes: List[Keyframe], threshold: float = 8.0) -> St
 
 def generate_contact_sheet_html(keyframes: List[Keyframe], report: StoryboardGateReport) -> str:
     """生成 Contact Sheet 縮圖總覽 HTML 頁面"""
-    eval_map = {e.frame_id: e for e in report.evaluations}
+    # 依位置對應評分：frame_id 可能重複，用 id 當 key 會讓兩張卡顯示同一份評分
     cards = []
 
-    for kf in keyframes:
-        ev = eval_map.get(kf.frame_id)
+    for idx, kf in enumerate(keyframes):
+        ev = report.evaluations[idx] if idx < len(report.evaluations) else None
         score_val = ev.total_score if ev else 0.0
         badge_class = "badge-pass" if (ev and ev.passed) else "badge-fail"
         badge_text = f"{score_val} / 10"
