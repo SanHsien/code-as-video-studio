@@ -150,6 +150,11 @@ class TestVerifyVideoStoryboard(unittest.TestCase):
         self.assertEqual(len(loaded), 1)
         self.assertEqual(loaded[0].frame_id, "KF-01")
         self.assertEqual(loaded[0].pitch_deg, 32.0)
+    def test_load_keyframes_accepts_top_level_list(self):
+        json_file = self.test_dir / "list.json"
+        json_file.write_text(json.dumps([{"frame_id": "A", "description": "x"}]), encoding="utf-8")
+        loaded = load_keyframes_from_json(json_file)
+        self.assertEqual([k.frame_id for k in loaded], ["A"])
 
 
 if __name__ == "__main__":

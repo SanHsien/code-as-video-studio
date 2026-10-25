@@ -359,7 +359,7 @@ def load_keyframes_from_json(path: Path) -> List[Keyframe]:
     """從 JSON 檔案載入關鍵影格清單"""
     content = path.read_text(encoding="utf-8")
     data = json.loads(content)
-    raw_frames = data.get("keyframes", data if isinstance(data, list) else [])
+    raw_frames = data if isinstance(data, list) else data.get("keyframes", [])
     frames: List[Keyframe] = []
     for f in raw_frames:
         frames.append(
