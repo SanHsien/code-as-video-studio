@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
-import os
+import re
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -101,6 +101,16 @@ class StoryboardGateReport:
     flagged_frames: int
     evaluations: List[KeyframeEvaluation]
     summary: str
+
+
+# 縮圖底色只放行常見 CSS 顏色字元；其餘改用預設色，避免從 style 屬性跳出注入標記。
+_SAFE_COLOR_RE = re.compile(r"^[#A-Za-z0-9 .,()%-]{1,64}$")
+_DEFAULT_THUMB_COLOR = "#111827"
+
+
+def _safe_color(value: Any) -> str:
+    text = str(value or "").strip()
+    return text if _SAFE_COLOR_RE.match(text) else _DEFAULT_THUMB_COLOR
 
 
 def evaluate_keyframe(kf: Keyframe, threshold: float = 8.0) -> KeyframeEvaluation:
@@ -247,7 +257,7 @@ def generate_contact_sheet_html(keyframes: List[Keyframe], report: StoryboardGat
             <span class="shot-type">{html.escape(kf.shot_type)}</span>
             <span class="badge {badge_class}">{badge_text}</span>
           </div>
-          <div class="thumb-box" style="background-color: {kf.thumbnail_color};">
+          <div class="thumb-box" style="background-color: {html.escape(_safe_color(kf.thumbnail_color))};">
             <div class="thumb-label">{html.escape(kf.shot_type)} - {kf.pitch_deg}°</div>
           </div>
           <div class="frame-body">

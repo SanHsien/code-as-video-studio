@@ -164,6 +164,11 @@ class TestVerifyVideoStoryboard(unittest.TestCase):
         html_out = generate_contact_sheet_html([good, bad], report)
         self.assertEqual(html_out.count('class="badge badge-pass"'), 1)
         self.assertEqual(html_out.count('class="badge badge-fail"'), 1)
+    def test_contact_sheet_escapes_thumbnail_color(self):
+        kf = Keyframe(frame_id="KF-01", timestamp=0.0, shot_type="Hero", description="d",
+                      thumbnail_color='red;" onmouseover="alert(1)')
+        html_out = generate_contact_sheet_html([kf], evaluate_storyboard([kf]))
+        self.assertNotIn('onmouseover="alert(1)', html_out)
 
 
 if __name__ == "__main__":
