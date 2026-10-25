@@ -126,11 +126,43 @@ class BeatGridEngine:
         return transitions
 
 
-if __name__ == "__main__":
-    engine = BeatGridEngine(bpm=120, fps=60)
+def main(argv: Optional[List[str]] = None) -> int:
+    """命令列：印出指定 BPM／FPS 下每一拍的影格位置，可輸出 JSON 給動畫程式讀。"""
+    import argparse
+    import json
+    import sys
+
+    for stream in (sys.stdout, sys.stderr):
+        if stream and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (ValueError, OSError):
+                pass
+
+    parser = argparse.ArgumentParser(description="節拍網格：算出每一拍落在第幾個影格，讓動畫與音樂同步")
+    parser.add_argument("--bpm", type=float, default=120.0, help="每分鐘拍數（預設 120）")
+    parser.add_argument("--fps", type=int, default=60, help="影格率（預設 60）")
+    parser.add_argument("--seconds", type=float, default=5.0, help="計算的時長（秒，預設 5）")
+    parser.add_argument("--json", action="store_true", help="以 JSON 輸出全部拍點")
+    args = parser.parse_args(argv)
+
+    try:
+        engine = BeatGridEngine(bpm=args.bpm, fps=args.fps)
+        cues = engine.get_beat_cues(duration_seconds=args.seconds)
+    except ValueError as err:
+        print(f"[ERROR] {err}", file=sys.stderr)
+        return 1
+
+    if args.json:
+        print(json.dumps([c.__dict__ for c in cues], ensure_ascii=False, indent=2))
+        return 0
     print(f"BPM: {engine.bpm}, FPS: {engine.fps}")
     print(f"每拍影格數: {engine.frames_per_beat:.2f} frames")
-    cues = engine.get_beat_cues(duration_seconds=5.0)
-    print(f"5秒內共有 {len(cues)} 拍：")
-    for c in cues[:6]:
+    print(f"{args.seconds:g} 秒內共有 {len(cues)} 拍：")
+    for c in cues:
         print(f"  拍 {c.beat_index}: frame={c.frame}, t={c.time_seconds}s, downbeat={c.is_downbeat}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

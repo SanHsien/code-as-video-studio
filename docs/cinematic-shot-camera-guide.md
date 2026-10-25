@@ -1,7 +1,7 @@
 # cinematic-shot 電影級產品發表運鏡規範與視覺提示詞手冊
 
 > 本規範整理自開源專案 [`1weiho/cinematic-shot`](https://github.com/1weiho/cinematic-shot) 之原始規格（來源路徑：`skills/cinematic-shot/SKILL.md`、`references/look.md` 與 `references/shot-list-example.md`）。  
-> 交付形式：以 `ai-inbox` 範本手冊（`docs/cinematic-shot-camera-guide.md`）交付，供影視生成專案、AI 提示詞編寫及程式化動畫（CSS 3D / Remotion）復用。
+> 交付形式：收錄於本 repo 的 `docs/cinematic-shot-camera-guide.md`（原為 ai-inbox 範本手冊），供影視生成專案、AI 提示詞編寫及程式化動畫（CSS 3D / Remotion）復用。
 
 ---
 

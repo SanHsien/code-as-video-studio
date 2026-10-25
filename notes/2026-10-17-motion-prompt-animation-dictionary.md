@@ -18,6 +18,8 @@ tags:
   - video-gen
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261017-17、T-20261017-18 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # Motion Prompt：讓 AI 聽懂動態語言的開源視覺動效字典（120 種動畫、動態畫布與 Agent Skill 整合）
 
 - **來源倉庫**：[GitHub - showheyohtaki/motion-prompt](https://github.com/showheyohtaki/motion-prompt)
@@ -94,7 +96,7 @@ tags:
 
 - **對應現有系統 / 專案**：
   - **與 `cinematic-shot` 協同**：先前收錄了 [`notes/2026-10-17-cinematic-shot-ui-film-director.md`](./2026-10-17-cinematic-shot-ui-film-director.md)（電影級 UI 鏡頭運鏡）。`cinematic-shot` 偏向整體場景調度與運鏡腳本，而 `motion-prompt` 正好補足了微觀動態元件（120 種精準命名與貝茲曲線參數），兩者結合能形成頂級的 UI 動態產品影片生成管線。
-  - **與 `Reelbird` 協同**：搭配 [`notes/2026-10-17-reelbird-open-source-screen-recorder.md`](./2026-10-17-reelbird-open-source-screen-recorder.md)，Agent 生成具備 `motion-prompt` 頂級動效的前端頁面後，直接以 Reelbird 錄製成果並生成分享短網址。
+  - **與 `Reelbird` 協同**：搭配 [[`ai-inbox/notes/2026-10-17-reelbird-open-source-screen-recorder.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-reelbird-open-source-screen-recorder.md)](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-reelbird-open-source-screen-recorder.md)，Agent 生成具備 `motion-prompt` 頂級動效的前端頁面後，直接以 Reelbird 錄製成果並生成分享短網址。
   - **前端樣式預設偏好**：符合全域規則中的「流暢的過場與 hover 回饋」，徹底解決工程師只會寫 `transition: all 0.3s ease` 的僵硬感。
 - **落差與採納判斷**：
   - **值得採納的部分**：
@@ -106,8 +108,6 @@ tags:
 ---
 
 ## 3. 詳盡待辦事項拆解（Action Items）
-
-> ⚠️ 狀態變更時，請同步更新根目錄 [`README.md`](../README.md) 的總表。
 
 - [x] **`T-20261017-17`**｜**[優先級：高]** 整理 `motion-prompt` 120 款動效的繁體中文名稱與參數對照表，納入前端動效手冊
   - **完成日期**：2026-10-23

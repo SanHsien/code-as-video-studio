@@ -19,6 +19,8 @@ tags:
   - ui-showcase
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261018-01、T-20261018-02 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # Prompt Motion 策展庫解構：Claude 驅動的代碼動效視頻（Code-driven Motion Graphics）原理與可複製 Prompts/Skills 實戰解析
 
 - **來源連結**：[Prompt Motion 官方網站](https://prompt-motion.com)
@@ -108,8 +110,6 @@ tags:
 ---
 
 ## 3. 詳盡待辦事項拆解（Action Items）
-
-> ⚠️ 狀態變更時，請同步更新根目錄 [`README.md`](../README.md) 的總表。
 
 - [ ] **`T-20261018-01`**｜**[優先級：低]** 建立「Claude 代碼動效視頻渲染標準工作流（Remotion / HTML Canvas Video Pipeline）」
   - **目標範圍**：多媒體生成技能庫與 Node.js 工具鏈

@@ -1,0 +1,20 @@
+# OS & Editor artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Scratch or temporary files
+.scratch/
+tmp/
+*.tmp
+
+
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+
+# video_asset_capture.py 的預設輸出
+assets/captured/

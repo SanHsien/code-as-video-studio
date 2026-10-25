@@ -11,7 +11,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # 讓 `tools` 套件不依賴執行目錄
-from tools.beat_grid import BeatGridEngine
+from tools.beat_grid import BeatGridEngine, main as beat_grid_main
+import contextlib
+import io
+import json
 
 
 class TestBeatGridEngine(unittest.TestCase):
@@ -124,6 +127,27 @@ class TestBeatGridEngine(unittest.TestCase):
         cues = engine.get_beat_cues(duration_seconds=1.0)
         self.assertEqual(cues[0].frame, -15)
         self.assertEqual(BeatGridEngine(bpm=120).get_beat_cues(0.0), [])
+
+
+class TestBeatGridCli(unittest.TestCase):
+    def run_cli(self, *args):
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            rc = beat_grid_main(list(args))
+        return rc, out.getvalue(), err.getvalue()
+
+    def test_json_output_lists_every_beat(self):
+        rc, out, _ = self.run_cli("--bpm", "70", "--fps", "30", "--seconds", "6", "--json")
+        self.assertEqual(rc, 0)
+        cues = json.loads(out)
+        self.assertEqual(len(cues), 7)  # 70 BPM、6 秒：0~5.14 秒共 7 拍
+        self.assertEqual(cues[0]["frame"], 0)
+
+    def test_invalid_bpm_returns_error_without_traceback(self):
+        rc, _, err = self.run_cli("--bpm", "0")
+        self.assertEqual(rc, 1)
+        self.assertIn("BPM", err)
+        self.assertNotIn("Traceback", err)
 
 
 if __name__ == "__main__":

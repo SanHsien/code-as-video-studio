@@ -2,7 +2,7 @@
 
 > 本手冊整理自開源專案 [`showheyohtaki/motion-prompt`](https://github.com/showheyohtaki/motion-prompt)。
 > **規格說明與數量校訂**：原始分析筆記初稿以 5 大套件（120 款動效）為基礎，實際檢閱官方倉庫時，官方已擴充推出第 6 套件 `motion2`（#121–#144），總計 **144 款動效**。為求最完整性與工程精確度，本手冊按實際倉庫內容完整收錄全套 144 款動效，並為 `motion2` 補齊精準繁體中文術語、對 AI 說法與動態物理參數。
-> 交付形式：以 `ai-inbox` 範本（`docs/motion-prompt-cheatsheet.md`）交付，供 Coding Agent、前端開發者與影視創作者精準索引。
+> 交付形式：收錄於本 repo 的 `docs/motion-prompt-cheatsheet.md`（原為 ai-inbox 範本），供 Coding Agent、前端開發者與影視創作者精準索引。
 
 ---
 

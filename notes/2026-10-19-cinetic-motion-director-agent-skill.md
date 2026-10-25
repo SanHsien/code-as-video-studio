@@ -21,6 +21,8 @@ tags:
   - agent-skills
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261019-03、T-20261019-04、T-20261025-06 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # Cinetic 動態導演 Agent Skill 解構：讓 Claude 掌握 273 種動畫技法、Remotion/GSAP 雙引擎與音畫同步節拍網格（Beat Grid）的 Code-as-Video 實踐
 
 - **來源連結**：[Threads 原貼文 (pizza的存錢日記＆＆自我成長)](https://www.threads.com/@ethansavemoneydairy/post/DeoDwjXgGYy)（短網址：[threads.com/share/BAW0aDxKf8](https://www.threads.com/share/BAW0aDxKf8/)）｜ [官方 GitHub (Leonxlnx/cinetic)](https://github.com/Leonxlnx/cinetic)
@@ -167,10 +169,10 @@ tags:
 
 - **Code-as-Video 動態視覺家族演進**：
   - [Prompt Motion 代碼動效視頻策展庫](./2026-10-18-prompt-motion-claude-video-showcase.md) ｜ 關聯任務：`T-20261018-01`、`T-20261018-02`
-  - [Awesome Opus 5.5 Videos 提示詞動物園](./2026-10-18-awesome-opus5-5-videos-prompt-zoo.md) ｜ 關聯任務：`T-20261018-07`、`T-20261018-08`
+  - [Awesome Opus 5.5 Videos 提示詞動物園](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-18-awesome-opus5-5-videos-prompt-zoo.md) ｜ 關聯任務：`T-20261018-07`、`T-20261018-08`
   - [cinematic-shot UI 發表片導演技能](./2026-10-17-cinematic-shot-ui-film-director.md) ｜ 關聯任務：`T-20261017-09`、`T-20261017-10`
   - [Motion Prompt 視覺動效字典](./2026-10-17-motion-prompt-animation-dictionary.md) ｜ 關聯任務：`T-20261017-17`、`T-20261017-18`
 - **前端審美與反 AI 罐頭設計**：
-  - [Shipper 92 萬字元 epstein.md 反 AI 罐頭設計](./2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
-  - [TasteSkill v2 得獎網站重構藝術指導](./2026-10-17-tasteskill-v2-anti-slop-frontend.md) ｜ 關聯任務：`T-20261017-21`、`T-20261017-22`
+  - [Shipper 92 萬字元 epstein.md 反 AI 罐頭設計](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
+  - [TasteSkill v2 得獎網站重構藝術指導](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-tasteskill-v2-anti-slop-frontend.md) ｜ 關聯任務：`T-20261017-21`、`T-20261017-22`
 

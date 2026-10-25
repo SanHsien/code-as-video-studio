@@ -448,6 +448,15 @@ def capture_url_assets(
 
 
 def main() -> int:
+    # 要在解析參數之前設定：--help 由 argparse 直接印出並結束，晚設就會用系統編碼輸出成亂碼。
+    # stderr 也要處理，否則 [WARN] 訊息含特殊字元時會 UnicodeEncodeError
+    for stream in (sys.stdout, sys.stderr):
+        if stream and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (ValueError, OSError):
+                pass
+
     parser = argparse.ArgumentParser(
         description="Code-as-Video 網頁素材自動捕獲與 seek(t) 範例生成器"
     )
@@ -470,11 +479,6 @@ def main() -> int:
     )
 
     args = parser.parse_args()
-
-    # 保證 Windows 終端 UTF-8；stderr 也要處理，否則 [WARN] 訊息含特殊字元時會 UnicodeEncodeError
-    for stream in (sys.stdout, sys.stderr):
-        if stream and hasattr(stream, "reconfigure"):
-            stream.reconfigure(encoding="utf-8", errors="replace")
 
     out_dir = Path(args.output_dir)
     print(f"[*] 開始捕獲網頁資產: {args.url}")

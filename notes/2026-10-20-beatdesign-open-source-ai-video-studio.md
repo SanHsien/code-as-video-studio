@@ -20,6 +20,8 @@ tags:
   - webcodecs
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261020-03、T-20261020-04 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # BeatDesign 開源 AI 影片工作台解構：本地優先 Higgsfield 平替方案、無限畫布與時間線雙模式、29 個 MCP 工具與 WebCodecs 原生剪輯實踐
 
 - **來源連結**：[BeatAPI/BeatDesign (GitHub)](https://github.com/BeatAPI/BeatDesign) ｜ [BeatDesign 官方站點](https://design.beatapi.io)
@@ -121,6 +123,6 @@ tags:
   - [Prompt Motion 代碼動效視頻策展庫](./2026-10-18-prompt-motion-claude-video-showcase.md) ｜ 關聯任務：`T-20261018-01`、`T-20261018-02`
   - [Motion Prompt 開源視覺動效字典](./2026-10-17-motion-prompt-animation-dictionary.md) ｜ 關聯任務：`T-20261017-17`、`T-20261017-18`
 - **Agent 原生工具鏈與 MCP 生態**：
-  - [REA 逆向工程 MCP Server](./2026-10-19-rea-reverse-engineer-anything-agent.md) ｜ 關聯任務：`T-20261019-09`、`T-20261019-10`
-  - [CLI-Anything：軟體升級為 Agent-Native CLI](./2026-10-18-cli-anything-agent-native-computer-use.md) ｜ 關聯任務：`T-20261018-11`、`T-20261018-12`
-  - [AI 共同大腦工業級架構全景規劃](./2026-10-19-ai-shared-brain-multi-agent-architecture.md) ｜ 關聯任務：`T-20261019-07`、`T-20261019-08`
+  - [REA 逆向工程 MCP Server](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-19-rea-reverse-engineer-anything-agent.md) ｜ 關聯任務：`T-20261019-09`、`T-20261019-10`
+  - [CLI-Anything：軟體升級為 Agent-Native CLI](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-18-cli-anything-agent-native-computer-use.md) ｜ 關聯任務：`T-20261018-11`、`T-20261018-12`
+  - [AI 共同大腦工業級架構全景規劃](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-19-ai-shared-brain-multi-agent-architecture.md) ｜ 關聯任務：`T-20261019-07`、`T-20261019-08`

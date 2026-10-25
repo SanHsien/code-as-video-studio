@@ -19,6 +19,8 @@ tags:
   - visual-direction
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261017-09、T-20261017-10 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # cinematic-shot：讓 AI Agent 像拍電影般掌鏡軟體產品發表片的視覺技能
 
 - **來源貼文**：[Threads @1weiho 貼文](https://www.threads.com/@1weiho/post/DelPZ5-E2Sc)（慶祝 GitHub 突破 100 Stars）
@@ -80,8 +82,6 @@ tags:
 ---
 
 ## 3. 詳盡待辦事項拆解（Action Items）
-
-> ⚠️ 狀態變更時，請同步更新根目錄 [`README.md`](../README.md) 的總表。
 
 - [x] **`T-20261017-09`**｜**[優先級：高]** 檢閱 `1weiho/cinematic-shot` 倉庫結構，提取其視覺提示詞（Visual Prompts）與運鏡規則手冊
   - **完成日期**：2026-10-23

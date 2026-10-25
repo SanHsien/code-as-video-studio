@@ -20,6 +20,8 @@ tags:
   - agent-skills
 ---
 
+> 📦 **來源紀錄**：本筆記原在 [`SanHsien/ai-inbox`](https://github.com/SanHsien/ai-inbox)，2026-10-25 隨程式碼生成影片工具一起搬來，內容保留原樣（任務 T-20261021-15、T-20261021-16 的狀態以當時紀錄為準）。文中的 `verify_inbox.py` 等指 ai-inbox 的工具。
+
 # Code-as-Video 影視工作室架構解構：以 Harness 取代 Prompt、seek(t) 時間函式、反 AI 視覺套路與分鏡縮圖自檢門禁實踐
 
 - **來源連結**：[0x Alpha (@0xalpha.ai) Threads 貼文](https://www.threads.net/@0xalpha.ai/post/DeMtM1bE4j_)
@@ -106,8 +108,8 @@ tags:
 - **Code-as-Video 與視覺動效體系**：
   - [BeatDesign 開源 AI 影片工作台](./2026-10-20-beatdesign-open-source-ai-video-studio.md) ｜ 關聯任務：`T-20261020-03`、`T-20261020-04`
   - [Cinetic 動態導演 Agent Skill](./2026-10-19-cinetic-motion-director-agent-skill.md) ｜ 關聯任務：`T-20261019-03`、`T-20261019-04`
-  - [Shipper 反 AI 罐頭設計 (epstein.md)](./2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
+  - [Shipper 反 AI 罐頭設計 (epstein.md)](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
   - [cinematic-shot：AI Agent 掌鏡軟體發表片](./2026-10-17-cinematic-shot-ui-film-director.md) ｜ 關聯任務：`T-20261017-09`、`T-20261017-10`
   - [Prompt Motion 代碼動效視頻策展庫](./2026-10-18-prompt-motion-claude-video-showcase.md) ｜ 關聯任務：`T-20261018-01`、`T-20261018-02`
 - **長上下文外包與模型分流**：
-  - [0x Alpha (GLM-5.3-Flash) 1M 模型](./2026-10-21-0x-alpha-glm-5-3-flash-1m-context.md) ｜ 關聯任務：`T-20261021-13`、`T-20261021-14`
+  - [0x Alpha (GLM-5.3-Flash) 1M 模型](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-21-0x-alpha-glm-5-3-flash-1m-context.md) ｜ 關聯任務：`T-20261021-13`、`T-20261021-14`
