@@ -5,16 +5,16 @@ description: 以 seek(t)、分鏡像素與文字量測、PNG 序列及 FFmpeg �
 
 # Motion Design Studio 可攜範本
 
-本範本配合 ai-inbox 的 `docs/code-driven-motion-design-studio-spec.md`。
+本範本配合本 repo 的 `docs/code-driven-motion-design-studio-spec.md`。
 分鏡工具是有限度的機械檢查，不是美感裁判。複製到其他專案時，先完成下列安裝，再填入品牌資料。
 
 ## 1. 安裝到其他專案
 
-從同一份 ai-inbox checkout **一起複製**這些檔案，不只複製本文：
+從同一份 code-as-video-studio checkout **一起複製**這些檔案，不只複製本文：
 
 ```text
-ai-inbox/tools/audit_motion_storyboard.py --> 新專案/tools/audit_motion_storyboard.py
-ai-inbox/docs/code-driven-motion-design-studio-spec.md --> 新專案/docs/code-driven-motion-design-studio-spec.md
+code-as-video-studio/tools/audit_motion_storyboard.py --> 新專案/tools/audit_motion_storyboard.py
+code-as-video-studio/docs/code-driven-motion-design-studio-spec.md --> 新專案/docs/code-driven-motion-design-studio-spec.md
 本文第 4 節 Python 區塊 --> 新專案/tools/render_frames.py
 本文第 3 節 HTML 區塊 --> 新專案/index.html
 ```
@@ -108,7 +108,7 @@ window.seek(0);
 
 ## 4. seek 逐幀輸出腳本
 
-將下列完整內容存成 `tools/render_frames.py`。此腳本依賴 Playwright，不需要 Node 或 ai-inbox 的 checkout；它是導出器，不取代 audit。每幀時間為 `i*1000/fps`，不重複最後端點；檔名從 `frame_0000.png` 開始。要求輸出目錄不存在或為空，防止舊序列混入。每幀有整體逾時（`--frame-timeout` 秒，或環境變數 `MOTION_RENDER_FRAME_TIMEOUT_S`，預設 60），逾時印 INCOMPLETE 並 exit 3；exit 1 是導出失敗，exit 2 是缺依賴或瀏覽器；三者都代表序列不可交付。
+將下列完整內容存成 `tools/render_frames.py`。此腳本依賴 Playwright，不需要 Node 或 code-as-video-studio 的 checkout；它是導出器，不取代 audit。每幀時間為 `i*1000/fps`，不重複最後端點；檔名從 `frame_0000.png` 開始。要求輸出目錄不存在或為空，防止舊序列混入。每幀有整體逾時（`--frame-timeout` 秒，或環境變數 `MOTION_RENDER_FRAME_TIMEOUT_S`，預設 60），逾時印 INCOMPLETE 並 exit 3；exit 1 是導出失敗，exit 2 是缺依賴或瀏覽器；三者都代表序列不可交付。
 
 ```python
 import argparse

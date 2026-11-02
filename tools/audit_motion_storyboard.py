@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """分鏡量測；0=通過，1=品質/頁面/影格失敗，2=參數/依賴錯誤，3=INCOMPLETE 逾時。
-環境變數：AI_INBOX_MOTION_TIMEOUT_MS（單一瀏覽器操作/seek，預設 15000）、AI_INBOX_MOTION_TOTAL_TIMEOUT_S（整體，預設 600）。"""
+環境變數：CODE_AS_VIDEO_MOTION_TIMEOUT_MS（單一瀏覽器操作/seek，預設 15000）、CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S（整體，預設 600）。"""
 from __future__ import annotations
 
 import argparse
@@ -270,7 +270,7 @@ def extract_keyframes_playwright(html_path, timestamps_ms, output_dir, viewport=
         from playwright.sync_api import sync_playwright, TimeoutError as BrowserTimeout
     except ImportError as exc:
         raise DependencyError('缺少 Playwright：python -m pip install playwright；python -m playwright install chromium') from exc
-    timeout = positive_env('AI_INBOX_MOTION_TIMEOUT_MS', 15000)
+    timeout = positive_env('CODE_AS_VIDEO_MOTION_TIMEOUT_MS', 15000)
     frames, errors = [], []
     output_dir.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
@@ -391,7 +391,7 @@ class Watchdog:
     逾時就印 INCOMPLETE 並以 exit 3 結束（Playwright driver 隨 stdin 關閉回收瀏覽器）。"""
 
     def __init__(self):
-        self.seconds = positive_env('AI_INBOX_MOTION_TOTAL_TIMEOUT_S', 600)
+        self.seconds = positive_env('CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S', 600)
         self.timer = threading.Timer(self.seconds, self.expire)
         self.timer.daemon = True
 

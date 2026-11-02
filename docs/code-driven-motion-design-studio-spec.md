@@ -139,13 +139,13 @@ python tools/audit_motion_storyboard.py index.html --duration 3000 --frames 6 --
 範圍：`--frames` 2..120；`--duration` 有限且 0 < ms <=600000；`--min-score` 8..10。
 `--timestamps` 可替代等分抽樣，必須有 2..120 個嚴格遞增、位於 0..duration 的有限值；例如 `0,600,1200,1800,2400,3000`。
 結束碼：0 通過；1 品質、頁面或影格失敗；2 缺依賴/瀏覽器、參數/路徑錯誤；3 逾時 INCOMPLETE。
-`AI_INBOX_MOTION_TIMEOUT_MS` 控制單一瀏覽器操作及非同步 seek，預設 15000ms。`AI_INBOX_MOTION_TOTAL_TIMEOUT_S` 是整體保險，預設 600 秒；`page.evaluate` 本身沒有逾時，seek 若是同步無窮迴圈，逾時後行程印 INCOMPLETE 並以 3 結束。
+`CODE_AS_VIDEO_MOTION_TIMEOUT_MS` 控制單一瀏覽器操作及非同步 seek，預設 15000ms。`CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S` 是整體保險，預設 600 秒；`page.evaluate` 本身沒有逾時，seek 若是同步無窮迴圈，逾時後行程印 INCOMPLETE 並以 3 結束。
 
 ### 4.1 測試與停止條件
 
 預設 `python -m unittest discover -s tests` 不跑瀏覽器（CI 只裝 Pillow 時，跑參數、依賴、評分、文字量測等單元測試；瀏覽器測試整組明確 skip）；沒有 Pillow 時依賴 Pillow 的單元測試也明確 skip，不會變紅。
-設 `AI_INBOX_BROWSER_TESTS=1` 後跑 `python -m unittest discover -s tests -p test_audit_motion_storyboard.py`。
-`AI_INBOX_MOTION_TEST_TIMEOUT_SECONDS` 預設 90 秒/子程序；`AI_INBOX_MOTION_TEST_WORKERS` 預設 1；`AI_INBOX_MOTION_TEST_CHANNEL` 可指定 msedge/chrome，未設時 Windows 用 msedge，其他平台用 Chromium。
+設 `CODE_AS_VIDEO_BROWSER_TESTS=1` 後跑 `python -m unittest discover -s tests -p test_audit_motion_storyboard.py`。
+`CODE_AS_VIDEO_MOTION_TEST_TIMEOUT_SECONDS` 預設 90 秒/子程序；`CODE_AS_VIDEO_MOTION_TEST_WORKERS` 預設 1；`CODE_AS_VIDEO_MOTION_TEST_CHANNEL` 可指定 msedge/chrome，未設時 Windows 用 msedge，其他平台用 Chromium。
 逾時明列 INCOMPLETE skip，既不是通過也不是品質失敗；測試會終止自己建立的程序樹。驗收報告須揭露 skip，不能將 exit 0 當完整瀏覽器驗收。
 修復最低分分鏡後只跑受影響測試；有完整通過證據即停止，不反覆開瀏覽器。
 

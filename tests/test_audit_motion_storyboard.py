@@ -1,4 +1,4 @@
-"""真實像素、反例與 CLI 契約。瀏覽器預設 skip；AI_INBOX_BROWSER_TESTS=1 才執行。"""
+"""真實像素、反例與 CLI 契約。瀏覽器預設 skip；CODE_AS_VIDEO_BROWSER_TESTS=1 才執行。"""
 from __future__ import annotations
 import concurrent.futures
 import contextlib
@@ -216,31 +216,31 @@ class UnitTests(unittest.TestCase):
 
     def test_total_timeout_watchdog_exits_three(self):
         calls=[]
-        with patch.dict(os.environ,{'AI_INBOX_MOTION_TOTAL_TIMEOUT_S':'1'}), patch.object(motion.os,'_exit',side_effect=calls.append), contextlib.redirect_stderr(io.StringIO()) as stderr:
+        with patch.dict(os.environ,{'CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S':'1'}), patch.object(motion.os,'_exit',side_effect=calls.append), contextlib.redirect_stderr(io.StringIO()) as stderr:
             with motion.Watchdog():
                 time.sleep(1.6)
         self.assertEqual(calls,[3])
         self.assertIn('INCOMPLETE',stderr.getvalue())
         calls.clear()
-        with patch.dict(os.environ,{'AI_INBOX_MOTION_TOTAL_TIMEOUT_S':'1'}), patch.object(motion.os,'_exit',side_effect=calls.append):
+        with patch.dict(os.environ,{'CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S':'1'}), patch.object(motion.os,'_exit',side_effect=calls.append):
             with motion.Watchdog():
                 pass
             time.sleep(1.4)
         self.assertEqual(calls,[],'正常結束後計時器必須取消')
-        with patch.dict(os.environ,{'AI_INBOX_MOTION_TOTAL_TIMEOUT_S':'0'}), contextlib.redirect_stderr(io.StringIO()):
+        with patch.dict(os.environ,{'CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S':'0'}), contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(motion.main([str(self.root/'missing.html')]),2)
 
 
 class BrowserTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if os.environ.get('AI_INBOX_BROWSER_TESTS') != '1':
-            raise unittest.SkipTest('瀏覽器預設不跑；設 AI_INBOX_BROWSER_TESTS=1')
+        if os.environ.get('CODE_AS_VIDEO_BROWSER_TESTS') != '1':
+            raise unittest.SkipTest('瀏覽器預設不跑；設 CODE_AS_VIDEO_BROWSER_TESTS=1')
         if not HAS_PIL or not HAS_PLAYWRIGHT:
             raise unittest.SkipTest('缺少 Pillow 或 Playwright，未執行瀏覽器驗證')
-        cls.timeout=motion.positive_env('AI_INBOX_MOTION_TEST_TIMEOUT_SECONDS',90)
-        cls.workers=motion.positive_env('AI_INBOX_MOTION_TEST_WORKERS',1)
-        cls.channel=os.environ.get('AI_INBOX_MOTION_TEST_CHANNEL','msedge' if os.name=='nt' else '')
+        cls.timeout=motion.positive_env('CODE_AS_VIDEO_MOTION_TEST_TIMEOUT_SECONDS',90)
+        cls.workers=motion.positive_env('CODE_AS_VIDEO_MOTION_TEST_WORKERS',1)
+        cls.channel=os.environ.get('CODE_AS_VIDEO_MOTION_TEST_CHANNEL','msedge' if os.name=='nt' else '')
 
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='motion_browser_')
@@ -386,7 +386,7 @@ class BrowserTests(unittest.TestCase):
 
     def test_sync_infinite_loop_is_incomplete(self):
         hang=page(script='window.seek=function(t){if(t>0){while(true){}}};')
-        code,error,_=self.run_page(hang,'hang',env={'AI_INBOX_MOTION_TOTAL_TIMEOUT_S':'20'},expect_code=3)
+        code,error,_=self.run_page(hang,'hang',env={'CODE_AS_VIDEO_MOTION_TOTAL_TIMEOUT_S':'20'},expect_code=3)
         self.assertIn('INCOMPLETE',error)
 
     def test_errors(self):
