@@ -19,6 +19,8 @@ tags:
   - shot-cafe
 ---
 
+> 本筆記於 2026-11-02 從 SanHsien/ai-inbox 移入，任務表與狀態保留移出當時的樣子。
+
 # 從尾牙簡報走向坎城電影感：AI 影片的電影級鏡頭語言、調色參考庫與 Prompt 工程管線
 
 - **來源貼文**：[Threads 貼文（玖桃 @xbox002000）](https://www.threads.com/@xbox002000/post/De3k3wgGkOE) ｜ [分享短鏈](https://www.threads.com/share/BAW7qiK1st/)
@@ -26,9 +28,9 @@ tags:
 - **分析日期**：`2026-10-26`
 - **當前狀態**：`🟢 已完成 (Done)`
 - **相關交叉參照**：
-  - [`notes/2026-10-18-awesome-opus5-5-videos-prompt-zoo.md`](./2026-10-18-awesome-opus5-5-videos-prompt-zoo.md)（高動態鏡頭與電影質感提示詞動物園）
-  - [`notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md`](./2026-10-17-shipper-epstein-md-anti-ai-slop.md)（拒絕 AI 罐頭與審美廉價感）
-  - [`notes/2026-10-26-3d-model-anything-iphone-lidar-threejs.md`](./2026-10-26-3d-model-anything-iphone-lidar-threejs.md)（空間幾何與相機姿態對齊）
+  - [`notes/2026-10-18-awesome-opus5-5-videos-prompt-zoo.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-18-awesome-opus5-5-videos-prompt-zoo.md)（高動態鏡頭與電影質感提示詞動物園）
+  - [`notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md)（拒絕 AI 罐頭與審美廉價感）
+  - [`notes/2026-10-26-3d-model-anything-iphone-lidar-threejs.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-26-3d-model-anything-iphone-lidar-threejs.md)（空間幾何與相機姿態對齊）
 
 ---
 
@@ -121,7 +123,7 @@ tags:
 
 ## 4. 拆解待辦事項（Action Items）
 
-> ⚠️ 本節是任務的唯一資料來源：改完執行 `python tools/build_index.py` 重產 [`README.md`](../README.md) 總表。
+> ⚠️ 本節是任務的唯一資料來源：改完執行 `python tools/build_index.py` 重產 [`README.md`](https://github.com/SanHsien/ai-inbox/blob/main/README.md) 總表。
 
 - [x] **`T-20261026-14`**｜**[優先級：高]** 撰寫「AI 影片電影級鏡頭語言與分鏡 Prompt 工程指引」收錄於 `docs/cinematic-ai-video-prompt-guide.md`
   - **目標範圍**：`docs/cinematic-ai-video-prompt-guide.md`（規範文檔；不修改其他專案程式）
@@ -134,7 +136,7 @@ tags:
   - **實作紀錄 / 證據**：docs/cinematic-ai-video-prompt-guide.md（283 行）：光學參數對照表、黑名單詞彙過濾規則、經典電影風格 Prompt 實例；回 403 抓不到的來源已標明。獨立驗收（fresh-context 審查員，2026-10-26）通過。
 
 - [ ] **`T-20261026-15`**｜**[優先級：中]** 實作 `tools/verify_cinematic_prompt.py` 檢查工具與單元測試
-  - **狀態**：⚪ 不做（不做：工具本質是比對黑名單詞彙的關鍵字檢查器，依 docs/external-judge-audit.md 第 5 節的政策不再新增這類驗證器；黑名單詞彙與替換建議直接寫在 docs/cinematic-ai-video-prompt-guide.md（T-20261026-14），由撰寫 prompt 的人或 Agent 照表使用。）
+  - **狀態**：⚪ 不做（不做：工具本質是比對黑名單詞彙的關鍵字檢查器，依 [docs/external-judge-audit.md](https://github.com/SanHsien/ai-inbox/blob/main/docs/external-judge-audit.md) 第 5 節的政策不再新增這類驗證器；黑名單詞彙與替換建議直接寫在 docs/cinematic-ai-video-prompt-guide.md（T-20261026-14），由撰寫 prompt 的人或 Agent 照表使用。）
   - **目標範圍**：`tools/verify_cinematic_prompt.py` 與 `tests/test_verify_cinematic_prompt.py`
   - **具體做法**：
     1. 實作純 Python 提示詞審查工具，檢驗輸入字串是否包含空洞罐頭詞（如 `cinematic`, `8k`, `photorealistic`）。
@@ -157,8 +159,8 @@ tags:
 ## 5. 關聯筆記與相關任務（Related Notes & Tasks）
 
 - **AI 影片與提示詞動物園**：
-  - [Awesome Opus 5.5 Videos 提示詞動物園](./2026-10-18-awesome-opus5-5-videos-prompt-zoo.md) ｜ 關聯任務：`T-20261018-07`、`T-20261018-08`
+  - [Awesome Opus 5.5 Videos 提示詞動物園](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-18-awesome-opus5-5-videos-prompt-zoo.md) ｜ 關聯任務：`T-20261018-07`、`T-20261018-08`
 - **反 AI 罐頭與審美防線**：
-  - [Shipper 反 AI 罐頭設計](./2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
+  - [Shipper 反 AI 罐頭設計](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md) ｜ 關聯任務：`T-20261017-19`、`T-20261017-20`
 - **空間運算與相機姿態對齊**：
-  - [3D Model Anything 空間運算](./2026-10-26-3d-model-anything-iphone-lidar-threejs.md) ｜ 關聯任務：`T-20261026-11`
+  - [3D Model Anything 空間運算](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-26-3d-model-anything-iphone-lidar-threejs.md) ｜ 關聯任務：`T-20261026-11`

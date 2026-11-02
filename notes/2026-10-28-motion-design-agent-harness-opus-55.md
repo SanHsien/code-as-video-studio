@@ -21,6 +21,8 @@ tags:
   - contact-sheet-scoring
 ---
 
+> 本筆記於 2026-11-02 從 SanHsien/ai-inbox 移入，任務表與狀態保留移出當時的樣子。
+
 # 代碼驅動 Motion Design Agent 架構：以 Harness 取代 Prompt、seek(t) 時間函式與分鏡自審循環
 
 - **來源連結**：[Threads 原文分享 (@0xalpha.ai)](https://www.threads.com/share/LYKSz64yr/) ｜ [貼文永久網址 (Threads @0xalpha.ai)](https://www.threads.net/@0xalpha.ai/post/DeMLz-KD1EE)
@@ -28,10 +30,10 @@ tags:
 - **分析主題**：Opus 5.5 / Claude Code 在動態設計（Motion Design）領域的工程躍遷、以確定性 Harness 取代虛浮 Prompt、將影片視為純時間函式 $\text{Frame} = f(t)$ 與 `seek(t)` 任意時點快照、工作室 CLAUDE.md 禁用老套罐頭（Anti-Slop）、渲染前縮圖總覽（Contact Sheet）自審打分循環、以及 Effort 等級分層策略
 - **當前狀態**：`🟢 已完成 (Done)`
 - **相關交叉參照**：
-  - [`notes/2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md`](./2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md)（Going Li 五路工具流：ROAD 01 影片工廠與多比例輸出）
-  - [`notes/2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md`](./2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md)（Thorsten Ball 15 條 Agent 實戰哲學：為 Agent 打造試錯工具與無可辯駁證據）
-  - [`notes/2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md`](./2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md)（Karpathy 四大黃金原則工程加固：精確定位與防盲目嘗試）
-  - [`notes/2026-10-26-ai-shared-memory-template-team-collaboration.md`](./2026-10-26-ai-shared-memory-template-team-collaboration.md)（AI 共用記憶系統三跳索引與動詞寫入契約）
+  - [`notes/2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md)（Going Li 五路工具流：ROAD 01 影片工廠與多比例輸出）
+  - [`notes/2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md)（Thorsten Ball 15 條 Agent 實戰哲學：為 Agent 打造試錯工具與無可辯駁證據）
+  - [`notes/2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md)（Karpathy 四大黃金原則工程加固：精確定位與防盲目嘗試）
+  - [`notes/2026-10-26-ai-shared-memory-template-team-collaboration.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-26-ai-shared-memory-template-team-collaboration.md)（AI 共用記憶系統三跳索引與動詞寫入契約）
 
 ---
 
@@ -123,7 +125,7 @@ tags:
 
 - **與現有體系（`ai-inbox` / `agent-assets` / `generative_ui`）的整合機會**：
   1. **Generative UI 與動態資產規範升級**：
-     - 現有 `assets/anti-slop-demo/` 已具備靜態 Anti-Slop 規範；引進 0xalpha 的 `seek(t)` 概念，可將動效展示擴展至時間維度。
+     - 現有 [`assets/anti-slop-demo/`](https://github.com/SanHsien/ai-inbox/tree/main/assets/anti-slop-demo) 已具備靜態 Anti-Slop 規範；引進 0xalpha 的 `seek(t)` 概念，可將動效展示擴展至時間維度。
   2. **自動化分鏡審查工具**：
      - 開發基於 Playwright 的縮圖總覽產生與靜態審查腳本，為視覺類任務建立客觀的外部裁判。
   3. **標準化 Motion Design Skill 範本**：
@@ -133,7 +135,7 @@ tags:
 
 ## 4. 拆解待辦事項（Action Items）
 
-> ⚠️ 本節是任務的唯一資料來源：改完執行 `python tools/build_index.py` 重產 [`README.md`](../README.md) 總表。
+> ⚠️ 本節是任務的唯一資料來源：改完執行 `python tools/build_index.py` 重產 [`README.md`](https://github.com/SanHsien/ai-inbox/blob/main/README.md) 總表。
 
 - [x] **`T-20261028-16`**｜**[優先級：高]** 撰寫「代碼驅動 Motion Design Agent 工作室規範指南」收錄於 `docs/code-driven-motion-design-studio-spec.md`
   - **目標範圍**：`docs/code-driven-motion-design-studio-spec.md`（規範文檔；不修改其他專案程式）
@@ -170,9 +172,9 @@ tags:
 ## 5. 關聯筆記與相關任務（Related Notes & Tasks）
 
 - **多 Agent 協同與產出路徑**：
-  - [Going Li 四 Agent 派工協定與五路工具流](./2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md) ｜ 關聯任務：`T-20261028-10`、`T-20261028-11`
-  - [Thorsten Ball 15 條 Agent 實戰哲學](./2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md) ｜ 關聯任務：`T-20261028-04`、`T-20261028-05`
+  - [Going Li 四 Agent 派工協定與五路工具流](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-multi-agent-team-dispatch-five-roads-going-li.md) ｜ 關聯任務：`T-20261028-10`、`T-20261028-11`
+  - [Thorsten Ball 15 條 Agent 實戰哲學](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-thorsten-ball-how-i-work-with-agents-2026.md) ｜ 關聯任務：`T-20261028-04`、`T-20261028-05`
 - **規範工程與防罐頭**：
-  - [Karpathy 版 CLAUDE.md 四大黃金原則工程加固](./2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md) ｜ 關聯任務：`T-20261028-01`、`T-20261028-02`
+  - [Karpathy 版 CLAUDE.md 四大黃金原則工程加固](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-28-karpathy-claude-md-four-rules-engineering-hardening.md) ｜ 關聯任務：`T-20261028-01`、`T-20261028-02`
 - **共用記憶與跨端沉澱**：
-  - [AI 共用記憶系統全景分析](./2026-10-26-ai-shared-memory-template-team-collaboration.md) ｜ 關聯任務：`T-20261026-23`、`T-20261026-24`
+  - [AI 共用記憶系統全景分析](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-26-ai-shared-memory-template-team-collaboration.md) ｜ 關聯任務：`T-20261026-23`、`T-20261026-24`
