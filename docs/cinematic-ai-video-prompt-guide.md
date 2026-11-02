@@ -270,7 +270,7 @@
 
 - 逐鏡填寫請用 [`templates/cinematic-storyboard-template.md`](../templates/cinematic-storyboard-template.md)，欄位與本文第 5.3 節六要素一一對應。
 - 產品介面（軟體 UI）發表片的運鏡參數，另見本 repo 的運鏡手冊：[`docs/cinematic-shot-camera-guide.md`](cinematic-shot-camera-guide.md)。該手冊針對 UI 動畫，其範例 Prompt 內含 `photorealistic`、`4k` 等本文黑名單詞；套用到人物或場景影片前，請先照第 5.3 節處理。
-- 相關筆記：[`notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md`](https://github.com/SanHsien/ai-inbox/blob/main/2026-10-17-shipper-epstein-md-anti-ai-slop.md)（同樣的「拒絕罐頭」思路，前端 UI 版）。
+- 相關筆記：[`notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md`](https://github.com/SanHsien/ai-inbox/blob/main/notes/2026-10-17-shipper-epstein-md-anti-ai-slop.md)（同樣的「拒絕罐頭」思路，前端 UI 版）。
 
 ---
 
