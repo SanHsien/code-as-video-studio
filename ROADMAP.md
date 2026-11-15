@@ -5,6 +5,8 @@
 
 ## 現況
 
+2026-11-15：`T-20261115-19` 敘事分鏡／人工審片文件已補齊，見 [SOP](docs/narrative-video-review-sop.md) 與[合成範例／驗證紀錄](docs/evidence/narrative-review-examples.md)；本項僅文件，不代表影片或模型品質已驗收。
+
 Code-as-Video 工具與手冊（節拍網格、網頁素材擷取、分鏡驗收閘門、動效與運鏡字典），自有 repo（public，非 fork）。健康：`CI`（ubuntu＋windows）最近一次 success（2026-10-25）、`CodeQL` success（2026-10-26 排程）；open issue 0 筆、open PR 0 筆；Dependabot 與 Code scanning 告警 0 筆；無 release。核心工具只用 Python 標準庫；2026-11-02 併入 `audit_motion_storyboard.py` 後，它需要 Pillow＋Playwright（選用），CI 固定安裝 `pillow==12.3.0` 供測試實跑，沒有 pip manifest（`.github/dependabot.yml` 以 `fleet-waiver: freshness` 豁免），只有 workflow 引用的 Actions 由 Dependabot 更新，Pillow 版本需手動升級。目前沒有卡住的事。
 
 ## 近期：可以直接動手
