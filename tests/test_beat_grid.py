@@ -152,3 +152,27 @@ class TestBeatGridCli(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestBeatGridResourceLimits(unittest.TestCase):
+    """2026-11-21 覆核：--seconds 1e9 或 --bpm 1e9 會讓 CLI 卡住並吃光記憶體（REVIEW.md）。"""
+
+    def test_huge_beat_counts_are_rejected_before_looping(self):
+        import time
+
+        for bpm, seconds in ((120.0, 1e9), (1e9, 5.0)):
+            with self.subTest(bpm=bpm, seconds=seconds):
+                started = time.monotonic()
+                with self.assertRaises(ValueError):
+                    BeatGridEngine(bpm=bpm).get_beat_cues(seconds)
+                self.assertLess(time.monotonic() - started, 1.0)
+
+    def test_cli_reports_huge_requests_as_errors(self):
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(beat_grid_main(["--seconds", "1e9"]), 1)
+        self.assertIn("拍", err.getvalue())
+
+    def test_normal_long_video_is_still_allowed(self):
+        # 一小時、200 BPM = 12000 拍，屬於正常用量
+        self.assertEqual(len(BeatGridEngine(bpm=200).get_beat_cues(3600.0)), 12000)

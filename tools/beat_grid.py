@@ -10,6 +10,9 @@ import math
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
+# 一次計算的拍數上限：24 小時 × 600 BPM ≈ 864000，100 萬已遠超影片用量
+MAX_BEATS = 1_000_000
+
 
 @dataclass
 class BeatCue:
@@ -52,6 +55,10 @@ class BeatGridEngine:
         """計算在指定秒數長度內的所有拍點影格清單"""
         if not math.isfinite(duration_seconds):
             raise ValueError("duration_seconds 必須是有限數值")
+        # 先算拍數上限再進迴圈：--seconds 1e9 或 --bpm 1e9 會產生上億筆拍點，CLI 卡住並吃光記憶體
+        expected = (duration_seconds - self.offset_seconds) * self.bpm / 60.0
+        if expected > MAX_BEATS:
+            raise ValueError(f"拍數約 {expected:.0f}，超過上限 {MAX_BEATS} 拍；請縮短時長或降低 BPM")
         cues = []
         beat_idx = 0
 

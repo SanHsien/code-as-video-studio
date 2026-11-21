@@ -450,3 +450,60 @@ class BrowserTests(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+
+
+class LinkedSourceTests(unittest.TestCase):
+    """2026-11-21 覆核：反罐頭原始碼檢查只看 HTML 本身，把 CSS／JS 搬到外部檔就躲過（REVIEW.md）。"""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='motion_linked_')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name) / '含 空白 目錄'
+        (self.root / 'css').mkdir(parents=True)
+
+    def test_local_stylesheets_scripts_and_imports_are_scanned(self):
+        (self.root / 'css' / 'main.css').write_text('@import "fade.css";\nbody{color:white}', encoding='utf-8')
+        (self.root / 'css' / 'fade.css').write_text('.a{transition:opacity .5s}', encoding='utf-8')
+        (self.root / 'app.js').write_text('n.textContent=Math.random()', encoding='utf-8')
+        html = ('<!doctype html><link rel="stylesheet" href="css/main.css">'
+                '<link href=\'https://example.invalid/remote.css\' rel=stylesheet>'
+                '<script src="app.js"></script><script src="missing.js"></script>')
+        target = self.root / 'page.html'
+        target.write_text(html, encoding='utf-8')
+        combined = motion.linked_local_sources(target, html)
+        ids = [v.rule_id for v in motion.check_html_anti_slop(html + combined)]
+        self.assertIn('SLOP-M02', ids)
+        self.assertIn('SLOP-M05', ids)
+
+    def test_audit_blocks_slop_hidden_in_external_files(self):
+        if not HAS_PIL:
+            self.skipTest('缺少 Pillow，未執行像素測試')
+        from PIL import Image
+        (self.root / 'fade.css').write_text('.a{transition:opacity .5s}', encoding='utf-8')
+        target = self.root / 'page.html'
+        target.write_text(MOVING.replace('<style>', '<link rel="stylesheet" href="fade.css"><style>'), encoding='utf-8')
+        image = Image.new('RGB', (40, 40), 'black'); image.paste('white', (0, 0, 20, 20))
+        frame_png = self.root / 'f.png'; image.save(frame_png)
+        frames = [motion.FrameInfo(i, i * 100, str(frame_png), 120, 40, seek_delta=0) for i in range(2)]
+        with patch.object(motion, 'extract_keyframes_playwright', return_value=(frames, [])):
+            report = motion.audit_motion_storyboard(target, frames_count=2, output_dir=self.root / 'out')
+        self.assertFalse(report.passed)
+        self.assertIn('SLOP-M02', [v['rule_id'] for v in report.anti_slop_violations])
+
+    def test_shared_files_in_a_parent_folder_are_scanned_too(self):
+        # 只掃頁面資料夾以內，等於留一條「放到上一層」的繞道
+        shared = Path(self.temp.name) / 'shared.css'
+        shared.write_text('.a{transition:opacity 1s}', encoding='utf-8')
+        target = self.root / 'page.html'
+        html = '<link rel="stylesheet" href="../shared.css?v=2#x">'
+        target.write_text(html, encoding='utf-8')
+        self.assertIn('transition:opacity', motion.linked_local_sources(target, html))
+
+    def test_import_cycles_and_unreadable_files_do_not_hang_or_raise(self):
+        (self.root / 'a.css').write_text('@import url("b.css");', encoding='utf-8')
+        (self.root / 'b.css').write_text('@import url(a.css);', encoding='utf-8')
+        (self.root / 'bin.js').write_bytes(b'\xff\xfe\x00broken')
+        target = self.root / 'page.html'
+        html = '<link rel="stylesheet" href="a.css"><script src="bin.js"></script>'
+        target.write_text(html, encoding='utf-8')
+        self.assertIsInstance(motion.linked_local_sources(target, html), str)

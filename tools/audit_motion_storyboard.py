@@ -85,6 +85,41 @@ def check_html_anti_slop(source):
             for key, name, pattern in rules if re.search(pattern, source, re.S | re.I)]
 
 
+_LINK_RE = re.compile(r'<link\b[^>]*>', re.I)
+_SCRIPT_SRC_RE = re.compile(r'<script\b[^>]*\bsrc\s*=\s*(["\']?)([^"\'\s>]+)\1', re.I)
+_HREF_RE = re.compile(r'\bhref\s*=\s*(["\']?)([^"\'\s>]+)\1', re.I)
+_IMPORT_RE = re.compile(r'@import\s+(?:url\(\s*)?(["\']?)([^"\')\s;]+)\1', re.I)
+_MAX_LINKED_FILES = 50
+
+
+def linked_local_sources(html_path, source):
+    """回傳頁面以相對路徑引用的本機 CSS／JS 內容（含 CSS @import），讓反罐頭檢查不能靠外部檔繞過。
+
+    只讀本機檔、不連網；網址、data: 與找不到或解不開的檔案略過。"""
+    html_path = Path(html_path)
+    refs = [m.group(2) for tag in _LINK_RE.findall(source) for m in [_HREF_RE.search(tag)] if m]
+    refs += [m.group(2) for m in _SCRIPT_SRC_RE.finditer(source)]
+    queue = [(html_path.parent, ref) for ref in refs]
+    seen, parts = set(), []
+    while queue and len(seen) < _MAX_LINKED_FILES:
+        base, ref = queue.pop(0)
+        ref = ref.split('#', 1)[0].split('?', 1)[0]
+        if not ref or re.match(r'^(?:[a-z][a-z0-9+.-]*:|//)', ref, re.I):
+            continue
+        path = (base / ref).resolve()
+        if path in seen or not path.is_file():
+            continue
+        seen.add(path)
+        try:
+            text = path.read_text(encoding='utf-8')
+        except (OSError, UnicodeDecodeError):
+            continue
+        parts.append(text)
+        if path.suffix.lower() == '.css':
+            queue.extend((path.parent, m.group(2)) for m in _IMPORT_RE.finditer(text))
+    return '\n'.join(parts)
+
+
 def analyze_image_luminance(image_path):
     Image, _, ImageStat = pillow()
     try:
@@ -433,7 +468,7 @@ def audit_motion_storyboard(html_path, duration_ms=3000., frames_count=6, timest
     pillow()
     html_path = Path(html_path)
     source = html_path.read_text(encoding='utf-8')
-    violations = check_html_anti_slop(source)
+    violations = check_html_anti_slop(source + '\n' + linked_local_sources(html_path, source))
     output_dir = Path(output_dir) if output_dir else html_path.parent/'artifacts'/'storyboard_audit'
     output_dir.mkdir(parents=True, exist_ok=True)
     timestamps = timestamps if timestamps is not None else [i*duration_ms/(frames_count-1) for i in range(frames_count)]

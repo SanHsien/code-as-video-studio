@@ -173,3 +173,100 @@ class TestVerifyVideoStoryboard(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestStoryboardGateCannotBeGamed(unittest.TestCase):
+    """2026-11-21 覆核：分鏡閘門可以被空白或寫法變化騙過的情況（REVIEW.md）。"""
+
+    def setUp(self):
+        self.test_dir = Path(tempfile.mkdtemp(prefix="test_storyboard_gaming_"))
+
+    def tearDown(self):
+        shutil.rmtree(self.test_dir, ignore_errors=True)
+
+    def good(self, **overrides):
+        values = dict(frame_id="KF-01", timestamp=0.0, shot_type="Hero",
+                      description="黑石平板斜角 34 度，極淺景深代碼高亮")
+        values.update(overrides)
+        return Keyframe(**values)
+
+    def test_blank_description_is_not_a_perfect_frame(self):
+        for description in ("", "   "):
+            with self.subTest(description=description):
+                ev = evaluate_keyframe(self.good(description=description))
+                self.assertFalse(ev.passed)
+
+    def test_eight_empty_frames_do_not_pass_the_gate(self):
+        from verify_video_storyboard import main
+
+        path = self.test_dir / "empty.json"
+        path.write_text(json.dumps([{}] * 8), encoding="utf-8")
+        self.assertEqual(main(["--input", str(path), "--output", str(self.test_dir / "out")]), 1)
+
+    def test_enum_values_are_case_insensitive(self):
+        self.assertFalse(evaluate_keyframe(self.good(camera_angle="FLAT")).passed)
+        self.assertFalse(evaluate_keyframe(self.good(focal_plane="Full_Sharp")).passed)
+        self.assertTrue(evaluate_keyframe(self.good(camera_angle="Oblique", focal_plane="Selective")).passed)
+
+    def test_unknown_enum_values_are_flagged(self):
+        self.assertFalse(evaluate_keyframe(self.good(camera_angle="dutch")).passed)
+        self.assertFalse(evaluate_keyframe(self.good(focal_plane="blurry")).passed)
+
+    def test_non_finite_numbers_are_flagged(self):
+        nan, inf = float("nan"), float("inf")
+        self.assertFalse(evaluate_keyframe(self.good(pitch_deg=nan)).passed)
+        self.assertFalse(evaluate_keyframe(self.good(pitch_deg=inf)).passed)
+        self.assertFalse(evaluate_keyframe(self.good(timestamp=nan)).passed)
+        self.assertFalse(evaluate_keyframe(self.good(timestamp=-1.0)).passed)
+
+    def test_keyword_separators_do_not_evade_rules(self):
+        for description in ("fade-in all", "Fade_In_All 的開場", "centered-title 三行"):
+            with self.subTest(description=description):
+                self.assertFalse(evaluate_keyframe(self.good(description=description)).passed)
+
+    def test_wrong_field_types_are_a_clean_error_not_a_traceback(self):
+        import contextlib
+        import io
+
+        from verify_video_storyboard import main
+
+        cases = {
+            "desc_int": [{"description": 123}] * 8,
+            "effects_int": [{"description": "x", "effects": [1]}] * 8,
+            "effects_str": [{"description": "x", "effects": "fade_in_all"}] * 8,
+            "frame_not_object": [1] * 8,
+        }
+        for name, data in cases.items():
+            with self.subTest(case=name):
+                path = self.test_dir / f"{name}.json"
+                path.write_text(json.dumps(data), encoding="utf-8")
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                    rc = main(["--input", str(path), "--output", str(self.test_dir / "out")])
+                self.assertEqual(rc, 1)
+                self.assertIn("無法解析分鏡 JSON", err.getvalue())
+
+    def test_threshold_cannot_be_lowered_below_8(self):
+        import contextlib
+        import io
+
+        from verify_video_storyboard import main
+
+        path = self.test_dir / "slop.json"
+        path.write_text(json.dumps([{"description": "x", "effects": ["fade_in_all"]}] * 8), encoding="utf-8")
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+            rc = main(["--input", str(path), "--output", str(self.test_dir / "out"), "--threshold", "0"])
+        self.assertEqual(rc, 2)
+        self.assertIn("8", err.getvalue())
+
+
+class TestThumbnailColorCssInjection(unittest.TestCase):
+    def test_css_declarations_cannot_ride_in_thumbnail_color(self):
+        # 2026-11-21 覆核：html.escape 擋得住跳出屬性，擋不住在 style 裡多塞一條 CSS；
+        # 拿掉色碼白名單時原有測試仍全綠。
+        kf = Keyframe("KF-01", 0.0, "Hero", "x",
+                      thumbnail_color="red;background-image:url(https://example.invalid/t.png)")
+        html_out = generate_contact_sheet_html([kf], evaluate_storyboard([kf]))
+        self.assertNotIn("url(", html_out)
+        self.assertNotIn("example.invalid", html_out)

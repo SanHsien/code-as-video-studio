@@ -5,6 +5,8 @@
 
 ## 現況
 
+2026-11-21：獨立覆核（`REVIEW.md`）補強分鏡閘門（空白分鏡、大小寫與未知列舉值、非有限數值、門檻下限）、動態設計審查的外部 CSS／JS 掃描與節拍網格的拍數上限；非瀏覽器測試全綠，瀏覽器端到端測試本機實跑結果見 `REVIEW.md`。
+
 2026-11-15：`T-20261115-19` 敘事分鏡／人工審片文件已補齊，見 [SOP](docs/narrative-video-review-sop.md) 與[合成範例／驗證紀錄](docs/evidence/narrative-review-examples.md)；本項僅文件，不代表影片或模型品質已驗收。
 
 Code-as-Video 工具與手冊（節拍網格、網頁素材擷取、分鏡驗收閘門、動效與運鏡字典），自有 repo（public，非 fork）。健康：`CI`（ubuntu＋windows）最近一次 success（2026-10-25）、`CodeQL` success（2026-10-26 排程）；open issue 0 筆、open PR 0 筆；Dependabot 與 Code scanning 告警 0 筆；無 release。核心工具只用 Python 標準庫；2026-11-02 併入 `audit_motion_storyboard.py` 後，它需要 Pillow＋Playwright（選用），CI 固定安裝 `pillow==12.3.0` 供測試實跑，沒有 pip manifest（`.github/dependabot.yml` 以 `fleet-waiver: freshness` 豁免），只有 workflow 引用的 Actions 由 Dependabot 更新，Pillow 版本需手動升級。目前沒有卡住的事。
@@ -20,6 +22,7 @@ Code-as-Video 工具與手冊（節拍網格、網頁素材擷取、分鏡驗收
 | 決定 `beat_grid` 負 offset 與捨入規則 | 有人實際用負 `offset_seconds` 或對拍點整數幀對齊結果有疑義時（目前 `round()` 為銀行家捨入、負 offset 會產生負時間拍點，未確認為缺陷） | 先在 `tests/test_beat_grid.py` 寫出期望行為的測試（拒絕負 offset 或明確允許並文件化）；`python -m unittest discover -s tests` 綠 | Claude Opus | `tools/beat_grid.py:39-45,60-66,94-101`；深掃報告（2026-10-26）「檢視後刻意不修」 |
 | 擷取離線降級時標示截圖來源 | 有使用者在離線降級時拿到與本次網址不符的舊 `screenshot.png` 並造成誤判 | 離線降級的輸出（metadata）記錄截圖是沿用舊檔；不覆寫既有真實截圖；有對應測試且 `python -m unittest discover -s tests` 綠 | Claude Sonnet | `tools/video_asset_capture.py:346-357`；深掃報告（2026-10-26） |
 | 瀏覽器端到端測試納入 CI | 想在 CI 跑 `CODE_AS_VIDEO_BROWSER_TESTS=1`（目前 CI 只裝 Pillow，30 個瀏覽器測試整組 skip；本機實跑約 4 分鐘） | CI 裝 Playwright＋瀏覽器並固定版本，且逾時以 INCOMPLETE 呈現、不算綠燈；`python -m unittest discover -s tests` 在 CI 全綠 | Claude Sonnet | 2026-11-02 併入 `audit_motion_storyboard.py`；`tests/test_audit_motion_storyboard.py` |
+| 分鏡閘門要求關鍵影格時間點嚴格遞增 | 有人交出時間點重複或倒序、卻通過閘門的分鏡（目前 8 張同一時間點的分鏡會放行；既有測試的範例分鏡也都用同一個時間點） | 先寫重複／倒序時間點被擋下的紅燈測試，既有測試的範例分鏡改成遞增時間點但斷言不變；`python -m unittest discover -s tests` 綠 | Claude Sonnet | `REVIEW.md` 2026-11-21 第 6 項；`tools/verify_video_storyboard.py` `evaluate_storyboard` |
 | 補齊 SCAFFOLD 選配檔（README.en.md、CONTRIBUTING、SECURITY） | 維護者要求對齊其他 repo | 檔案存在且 `python -m fleet_ops audit` 對本 repo 仍 0 gaps（在 repo-fleet-ops 執行） | Claude Haiku | 接續開發報告（2026-10-26）「刻意不做」 |
 
 ## 刻意不做

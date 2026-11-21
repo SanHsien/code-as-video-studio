@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import math
 import re
 import sys
 from dataclasses import asdict, dataclass, field
@@ -103,6 +104,17 @@ class StoryboardGateReport:
     summary: str
 
 
+CAMERA_ANGLES = ("oblique", "flat", "top-down")
+FOCAL_PLANES = ("selective", "full_sharp")
+# 閘門的下限：AGENTS.md 鐵律 2 不允許調低門檻硬過
+MIN_THRESHOLD = 8.0
+
+
+def _compact(text: str) -> str:
+    """小寫並把空白、連字號、底線一律視為一個空白，「fade-in all」與「fade in all」才會命中同一規則。"""
+    return re.sub(r"[\s\-_]+", " ", text.lower())
+
+
 # 縮圖底色只放行常見 CSS 顏色字元；其餘改用預設色，避免從 style 屬性跳出注入標記。
 _SAFE_COLOR_RE = re.compile(r"^[#A-Za-z0-9 .,()%-]{1,64}$")
 _DEFAULT_THUMB_COLOR = "#111827"
@@ -119,10 +131,36 @@ def evaluate_keyframe(kf: Keyframe, threshold: float = 8.0) -> KeyframeEvaluatio
     violations: List[str] = []
     remediations: List[str] = []
 
+    # 0. 沒有內容或數值無效的影格無法審查，不能因為「沒有違規」而拿滿分
+    structural_deduction = 0.0
+    if not kf.description.strip():
+        structural_deduction += 10.0
+        violations.append("缺少畫面描述：空白影格無法審查 (-10 分)")
+        remediations.append("在 description 寫出這一格畫面上有什麼、鏡頭怎麼動。")
+    if not (math.isfinite(kf.timestamp) and kf.timestamp >= 0):
+        structural_deduction += 2.5
+        violations.append(f"時間點無效：{kf.timestamp} (-2.5 分)")
+        remediations.append("timestamp 填 0 以上的有限秒數。")
+    if not math.isfinite(kf.pitch_deg):
+        structural_deduction += 2.5
+        violations.append(f"俯仰角無效：{kf.pitch_deg} (-2.5 分)")
+        remediations.append("pitch_deg 填有限的角度數值。")
+    camera_angle = kf.camera_angle.strip().lower().replace("_", "-")
+    focal_plane = kf.focal_plane.strip().lower().replace("-", "_")
+    if camera_angle not in CAMERA_ANGLES:
+        structural_deduction += 2.5
+        violations.append(f"未知的 camera_angle：{kf.camera_angle} (-2.5 分)")
+        remediations.append(f"camera_angle 只能是 {', '.join(CAMERA_ANGLES)}。")
+    if focal_plane not in FOCAL_PLANES:
+        structural_deduction += 2.5
+        violations.append(f"未知的 focal_plane：{kf.focal_plane} (-2.5 分)")
+        remediations.append(f"focal_plane 只能是 {', '.join(FOCAL_PLANES)}。")
+    score -= structural_deduction
+
     # 1. 檢查反 AI 罐頭規則
     desc_lower = kf.description.lower()
     effects_str = " ".join(kf.effects).lower()
-    combined_text = f"{desc_lower} {effects_str}"
+    combined_text = _compact(f"{desc_lower} {effects_str}")
 
     anti_slop_deduction = 0.0
     for rule in ANTI_SLOP_RULES:
@@ -131,7 +169,7 @@ def evaluate_keyframe(kf: Keyframe, threshold: float = 8.0) -> KeyframeEvaluatio
             violated = True
         else:
             for kw in rule["keywords"]:
-                if kw in combined_text:
+                if _compact(kw) in combined_text:
                     violated = True
                     break
 
@@ -145,12 +183,12 @@ def evaluate_keyframe(kf: Keyframe, threshold: float = 8.0) -> KeyframeEvaluatio
 
     # 2. 構圖與視角檢查 (Composition)
     composition_score = 10.0
-    if kf.shot_type.lower() != "outro" and (kf.camera_angle == "flat" or abs(kf.pitch_deg) < 5.0):
+    if kf.shot_type.lower() != "outro" and (camera_angle == "flat" or abs(kf.pitch_deg) < 5.0):
         composition_score -= 2.5
         violations.append("死板正視角構圖 (-2.5 分)")
         remediations.append("增加 30°~45° 俯仰傾斜角度與淺景深，使軟體介面具備物理懸浮質感。")
 
-    if kf.focal_plane == "full_sharp" and kf.shot_type.lower() in ("hero", "close-up"):
+    if focal_plane == "full_sharp" and kf.shot_type.lower() in ("hero", "close-up"):
         composition_score -= 1.5
         violations.append("全平面死板對焦 (-1.5 分)")
         remediations.append("改用極薄焦平面（僅保留當前操作行銳利，周遭柔和虛化）。")
@@ -370,8 +408,18 @@ def load_keyframes_from_json(path: Path) -> List[Keyframe]:
     content = path.read_text(encoding="utf-8")
     data = json.loads(content)
     raw_frames = data if isinstance(data, list) else data.get("keyframes", [])
+    if not isinstance(raw_frames, list):
+        raise ValueError("keyframes 必須是陣列")
     frames: List[Keyframe] = []
-    for f in raw_frames:
+    for index, f in enumerate(raw_frames, start=1):
+        if not isinstance(f, dict):
+            raise ValueError(f"第 {index} 張關鍵影格必須是物件")
+        for key in ("frame_id", "id", "shot_type", "description", "camera_angle", "focal_plane"):
+            if key in f and not isinstance(f[key], str):
+                raise ValueError(f"第 {index} 張關鍵影格的 {key} 必須是字串")
+        for key in ("effects", "elements"):
+            if key in f and not (isinstance(f[key], list) and all(isinstance(item, str) for item in f[key])):
+                raise ValueError(f"第 {index} 張關鍵影格的 {key} 必須是字串陣列")
         frames.append(
             Keyframe(
                 frame_id=f.get("frame_id", f.get("id", f"KF-{len(frames)+1:02d}")),
@@ -397,6 +445,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--threshold", type=float, default=8.0, help="放行及格分數門檻 (預設 8.0)")
     parser.add_argument("--json", action="store_true", help="在終端以 JSON 輸出報告")
     args = parser.parse_args(argv)
+    if not (math.isfinite(args.threshold) and MIN_THRESHOLD <= args.threshold <= 10.0):
+        print(f"錯誤：--threshold 必須為 {MIN_THRESHOLD:g}..10，不可調低門檻硬過", file=sys.stderr)
+        return 2
 
     input_path = Path(args.input)
     if not input_path.exists():

@@ -13,10 +13,10 @@
 
 | 指令 | 用途 |
 | :--- | :--- |
-| `python tools/beat_grid.py --bpm 120 --fps 60 --seconds 5 [--json]` | 節拍網格：算出每一拍的影格位置，讓動畫與音樂同步 |
+| `python tools/beat_grid.py --bpm 120 --fps 60 --seconds 5 [--json]` | 節拍網格：算出每一拍的影格位置，讓動畫與音樂同步；一次最多 100 萬拍，超過回報錯誤 |
 | `python tools/video_asset_capture.py --url https://example.com -o assets/captured [--offline]` | 擷取產品網頁截圖與主色，產生 `seek(t)` 動畫範例；只接受 http(s) 網址 |
-| `python tools/verify_video_storyboard.py --input templates/storyboard-example.json [--output 報告目錄] [--threshold 8.0] [--json]` | 分鏡驗收閘門：8~12 張關鍵影格逐格打分，有違規或低於門檻就擋下 |
-| `python tools/audit_motion_storyboard.py index.html --duration 3000 --frames 6 --output-dir artifacts/storyboard [--json]` | 動態設計審查：用瀏覽器對動畫 HTML 做 `seek(t)` 實際擷取影格，量測相鄰影格像素差、正逆序一致、文字碰撞／超出畫面、對比與頁面錯誤；需 Pillow＋Playwright，缺依賴 exit 2、逾時 exit 3（INCOMPLETE） |
+| `python tools/verify_video_storyboard.py --input templates/storyboard-example.json [--output 報告目錄] [--threshold 8.0] [--json]` | 分鏡驗收閘門：8~12 張關鍵影格逐格打分，有違規或低於門檻就擋下；`--threshold` 只能 8～10（調低回 exit 2），空白描述、未知的 `camera_angle`／`focal_plane`、非有限數值都算違規，欄位型別錯誤回報解析錯誤 |
+| `python tools/audit_motion_storyboard.py index.html --duration 3000 --frames 6 --output-dir artifacts/storyboard [--json]` | 動態設計審查：用瀏覽器對動畫 HTML 做 `seek(t)` 實際擷取影格，量測相鄰影格像素差、正逆序一致、文字碰撞／超出畫面、對比與頁面錯誤；反罐頭原始碼檢查也會讀頁面以相對路徑引用的本機 CSS／JS（含 `@import`）；需 Pillow＋Playwright，缺依賴 exit 2、逾時 exit 3（INCOMPLETE） |
 | `python tools/verify_motion_and_video_specs.py` | 檢查本 repo 的手冊結構沒被改壞 |
 
 ### 兩支分鏡工具的分工
@@ -28,7 +28,7 @@
 | 依賴 | 只用標準庫 | Pillow＋Playwright |
 | 適用時機 | 動手做之前，先驗分鏡規劃 | 動畫做出來之後，驗實際畫面 |
 
-兩支工具刻意分開、不合併：前者驗「計畫」，後者驗「成品」。共用的評審輔助函式在 `tools/_judge_common.py`。詳見 `docs/code-driven-motion-design-studio-spec.md`。
+兩支工具刻意分開、不合併：前者驗「計畫」，後者驗「成品」。`verify_video_storyboard.py` 只能檢查分鏡 JSON 自己寫了什麼：描述換個說法（例如「置中的大標題」）就比對不到關鍵字，它擋得住明顯的套路與空白分鏡，擋不住刻意改寫；畫面是否真的合格要交給 `audit_motion_storyboard.py` 量測成品。共用的評審輔助函式在 `tools/_judge_common.py`。詳見 `docs/code-driven-motion-design-studio-spec.md`。
 
 `video_asset_capture.py` 有安裝 [Playwright](https://playwright.dev/python/) 時會開真瀏覽器截圖；沒有安裝或離線時，自動改用內建的預設素材。其餘工具只用 Python 標準庫（`audit_motion_storyboard.py` 需要 Pillow＋Playwright）。
 
